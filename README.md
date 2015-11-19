@@ -1,4 +1,4 @@
-https://travis-ci.org/marcelocure/octopusapi.svg
+<img src="https://travis-ci.org/marcelocure/octopusapi.svg"/>
 
 # Octopus API
 Python engine to build rest API's based on Falcon.
