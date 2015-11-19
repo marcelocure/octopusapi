@@ -30,6 +30,19 @@ class Resource(object):
 		self.post = post
 		self.put = put
 		self.delete = delete
+		self.allowed_methods = []
+		if self.get:
+			self.allowed_methods.append('get')
+		
+		if self.post:
+			self.allowed_methods.append('post')
+		
+		if self.put:
+			self.allowed_methods.append('put')
+		
+		if self.delete:
+			self.allowed_methods.append('delete')
+
 
 	def validate_contract(self, req):
 		fields = map(lambda field: field.name, self.fields)
@@ -40,13 +53,24 @@ class Resource(object):
 
 
 	def on_get(self, req, resp, id=None):
+		if not self.get:
+			raise falcon.HTTPMethodNotAllowed(self.allowed_methods)
 		self.get(req, resp)
 
 	def on_put(self, req, resp, id=None):
+		if not self.put:
+			raise falcon.HTTPMethodNotAllowed(self.allowed_methods)
 		self.put(req, resp)
+
+	def on_delete(self, req, resp, id=None):
+		if not self.delete:
+			raise falcon.HTTPMethodNotAllowed(self.allowed_methods)
+		self.delete(req, resp)
 
 	@falcon.before(max_body(64 * 1024))
 	def on_post(self, req, resp):
+		if not self.post:
+			raise falcon.HTTPMethodNotAllowed(self.allowed_methods)
 		self.validate_contract(req)
 		self.post(req, resp)
 
