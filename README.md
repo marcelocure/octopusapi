@@ -1,11 +1,11 @@
+https://travis-ci.org/marcelocure/octopusapi.svg
+
 # Octopus API
 Python engine to build rest API's based on Falcon.
 
 Installation:
 
-1) install falcom as per its docs http://falcon.readthedocs.org/en/latest/user/install.html
-
-2) pip install -r requirements-dev.txt
+please refer to https://github.com/marcelocure/octopusapi/blob/master/.travis.yml for installation steps
 
 Some octopusapi goals:
 
