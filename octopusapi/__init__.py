@@ -42,6 +42,9 @@ class Resource(object):
 	def on_get(self, req, resp, id=None):
 		self.get(req, resp)
 
+	def on_put(self, req, resp, id=None):
+		self.put(req, resp)
+
 	@falcon.before(max_body(64 * 1024))
 	def on_post(self, req, resp):
 		self.validate_contract(req)
