@@ -49,7 +49,7 @@ class Resource(object):
 		request_fields = req.context['doc'][self.name].keys()
 		result = filter(lambda key: key in fields, request_fields)
 		if len(result) != len(self.fields):
-			raise falcon.HTTPBadRequest('Invalid input fields', 'The fields containing in the request body are not valid.')
+			raise falcon.HTTPBadRequest('Invalid input fields', 'The fields contained in the request body are not valid.')
 
 
 	def on_get(self, req, resp, id=None):
@@ -77,8 +77,9 @@ class Resource(object):
 
 
 class OctopusApp(object):
-	def __init__(self, resources, config):
+	def __init__(self, app_name, resources, config):
 		self.resources = resources
+		self.app_name = app_name
 
 	def validate_resource(self, resource):
 		if not(resource.on_get or resource.on_post or resource.on_put or resource.on_delete):
@@ -87,7 +88,7 @@ class OctopusApp(object):
 
 	def load_resource(self, app, resource):
 		self.validate_resource(resource)
-		app.add_route('/{0}/'.format(resource.name), resource)
+		app.add_route('/{0}/{1}/'.format(self.app_name, resource.name), resource)
 
 	def run_server(self):
 		app = falcon.API(middleware=[AuthMiddleware(), RequireJSON(), JSONTranslator()])

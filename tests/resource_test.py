@@ -22,26 +22,26 @@ def start_api():
 
 	order = Resource('order', fields, get=get, put=put)
 
-	app = OctopusApp([order], config)
+	app = OctopusApp('test', [order], config)
 	app.run_server()
 
 thread.start_new_thread(start_api, () )
 
 class Test(unittest.TestCase):
 	def test_should_return_200_get(self):
-		response = requests.get('http://127.0.0.1:8000/order')
+		response = requests.get('http://127.0.0.1:8000/test/order')
 		self.assertEqual(response.status_code, 200)
 
 	def test_should_return_200_put(self):
-		response = requests.put('http://127.0.0.1:8000/order')
+		response = requests.put('http://127.0.0.1:8000/test/order')
 		self.assertEqual(response.status_code, 200)
 
 	def test_should_return_404(self):
-		response = requests.get('http://127.0.0.1:8000/order2')
+		response = requests.get('http://127.0.0.1:8000/test/order2')
 		self.assertEqual(response.status_code, 404)
 
 	def test_should_return_405(self):
-		response = requests.delete('http://127.0.0.1:8000/order')
+		response = requests.delete('http://127.0.0.1:8000/test/order')
 		self.assertEqual(response.status_code, 405)
 
 if __name__ == '__main__':

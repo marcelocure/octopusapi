@@ -19,5 +19,5 @@ def post(request, response):
 
 order = Resource('order', fields, get=get, post=post)
 
-app = OctopusApp([order], config)
+app = OctopusApp('autoDealer', [order], config)
 app.run_server()
