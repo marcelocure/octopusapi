@@ -29,22 +29,21 @@ import falcon
 
 
 fields = []
-fields.append(Field(name='serialNumber', type='string', description='Device serial number'))
-fields.append(Field(name='status', type='string', description='Order status', valid_values=['processing', 'error', 'completed']))
-fields.append(Field(name='activationLocation', type='string', description='Activation Location'))
+fields.append(Field(name='name', type='string', description='dealer name'))
+fields.append(Field(name='status', type='string', description='status', valid_values=['active', 'inactive']))
 
 def get(request, response):
 	print request
-	response.body = 'fuck yeahhh!!'
+	response.body = 'yeahhh!!'
 	response.status = falcon.HTTP_200
 
 def post(request, response):
 	print request
 	response.status = falcon.HTTP_200
 
-order = Resource('order', fields, get=get, post=post)
+dealer = Resource('dealer', fields, get=get, post=post)
 
-app = OctopusApp('autoDealer', [order], config)
+app = OctopusApp('dealership-api', [dealer], config)
 app.run_server()
 ```
 
