@@ -11,13 +11,13 @@ Some octopusapi goals:
 
 1) Create multiple endpoints;
 
-2) Create contract
+2) Create contract;
 
 3) Contract input validation already embeded on the API;
 
 4) Easily setup;
 
-5) Performance;
+5) Performance.
 
 # Usage: 
 
