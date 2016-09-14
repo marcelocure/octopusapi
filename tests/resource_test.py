@@ -4,7 +4,7 @@ import config
 import falcon
 import requests
 import thread
-import time
+import json
 
 
 def start_api():
@@ -20,7 +20,11 @@ def start_api():
 	    response.body = 'put received'
 	    response.status = falcon.HTTP_200
 
-	order = Resource('order', fields, get=get, put=put)
+	def post(request, response):
+	    response.body = 'post received'
+	    response.status = falcon.HTTP_201
+
+	order = Resource('order', fields, get=get, put=put, post=post)
 
 	app = OctopusApp('test', [order], config)
 	app.run_server()
@@ -43,6 +47,18 @@ class Test(unittest.TestCase):
 	def test_should_return_405(self):
 		response = requests.delete('http://127.0.0.1:8000/test/order')
 		self.assertEqual(response.status_code, 405)
+
+	def test_should_return_400(self):
+		payload = json.dumps({'order':{'serialNumber':'12'}})
+		headers = {'Content-type':'application/json'}
+		response = requests.post('http://127.0.0.1:8000/test/order', data=payload, headers=headers)
+		self.assertEqual(response.status_code, 400)
+
+	def test_should_return_201(self):
+		payload = json.dumps({'order':{'serialNumber':'12', 'activationLocation':'ss'}})
+		headers = {'Content-type':'application/json'}
+		response = requests.post('http://127.0.0.1:8000/test/order', data=payload, headers=headers)
+		self.assertEqual(response.status_code, 201)
 
 if __name__ == '__main__':
     unittest.main()
