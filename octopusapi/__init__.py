@@ -48,7 +48,8 @@ class Resource(object):
 		fields = map(lambda field: field.name, self.fields)
 		request_fields = req.context['doc'][self.name].keys()
 		result = filter(lambda key: key in fields, request_fields)
-		if len(result) != len(self.fields):
+		all_fields_informed = lambda result: len(result) == len(self.fields)
+		if not all_fields_informed(result):
 			raise falcon.HTTPBadRequest('Invalid input fields', 'The fields contained in the request body are not valid.')
 
 
@@ -80,6 +81,7 @@ class OctopusApp(object):
 	def __init__(self, app_name, resources, config):
 		self.resources = resources
 		self.app_name = app_name
+		self.config = config
 
 	def validate_resource(self, resource):
 		if not(resource.on_get or resource.on_post or resource.on_put or resource.on_delete):
@@ -96,5 +98,5 @@ class OctopusApp(object):
 
 		app.add_error_handler(StorageError, StorageError.handle)
 
-		httpd = simple_server.make_server(config.host, config.port, app)
+		httpd = simple_server.make_server(self.config.host, self.config.port, app)
 		httpd.serve_forever()
