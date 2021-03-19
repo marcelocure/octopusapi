@@ -21,4 +21,4 @@ colorama==0.2.7
 
 falcon==0.3.0
 wsgiref==0.1.2
-requests==2.4.3
+requests==2.20.0
